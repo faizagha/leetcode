@@ -1,17 +1,13 @@
 class Solution {
     public void moveZeroes(int[] nums) {
-        int[] zeroMoved = new int[nums.length];
-        int index = 0;
-
-        for (int num : nums) {
-            if (num != 0) {
-                zeroMoved[index] = num;
-                index++;
+        //Do not return anything, modify nums in-place instead.
+        int l = 0;
+        for(int r = 0; r < nums.length; r++)
+            if(nums[r] != 0) {
+                int tmp = nums[l];
+                nums[l] = nums[r];
+                nums[r] = tmp;
+                l += 1;
             }
-        }
-
-        // Copy the elements from zeroMoved back to nums
-        System.arraycopy(zeroMoved, 0, nums, 0, nums.length);
     }
-
 }

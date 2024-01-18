@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 class Solution {
     public boolean checkInclusion(String s1, String s2) {
         int len1 = s1.length();
@@ -17,22 +15,13 @@ class Solution {
         }
         int j = 0;
         for (int i = len1; i < len2; i++) {
-            if (checkArraysEqual(s1Cnt, currCnt)){
+            if (Arrays.compare(s1Cnt, currCnt) == 0) {
                 return true;
             }
             currCnt[s2.charAt(i) - 'a']++;
             currCnt[s2.charAt(j) - 'a']--;
             j++;
         }
-        return checkArraysEqual(s1Cnt, currCnt);
-    }
-
-    private boolean checkArraysEqual(int[] arr1, int[] arr2) {
-        for (int i = 0; i < 26; i++) {
-            if (arr1[i] != arr2[i]) {
-                return false;
-            }
-        }
-        return true;
+        return Arrays.compare(s1Cnt, currCnt) == 0;
     }
 }

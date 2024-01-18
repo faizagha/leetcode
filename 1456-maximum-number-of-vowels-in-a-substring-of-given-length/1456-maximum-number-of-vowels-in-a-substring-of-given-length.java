@@ -1,30 +1,33 @@
 class Solution {
 
 public int maxVowels(String s, int k) {
-        HashSet<Character> vowels = new HashSet<>();
-        vowels.add('a');
-        vowels.add('e');
-        vowels.add('i');
-        vowels.add('o');
-        vowels.add('u');
-
         int maxCount = 0;
+        int tempCount = 0;
+
+        // Count vowels in the first window
         for (int i = 0; i < k; i++) {
-            if (vowels.contains(s.charAt(i))){
-                maxCount++;
-            }
-        }
-        int tempCount = maxCount;
-        for (int i = k; i < s.length(); i++) {
-            if (vowels.contains(s.charAt(i - k))){
-                tempCount--;
-            }
-            if (vowels.contains(s.charAt(i))){
+            if (isVowel(s.charAt(i))) {
                 tempCount++;
             }
-            maxCount = Math.max(tempCount,maxCount);
+        }
+        maxCount = tempCount;
+
+        // Slide the window and update the count
+        for (int i = k; i < s.length(); i++) {
+            if (isVowel(s.charAt(i - k))) {
+                tempCount--; // Remove the leftmost character from the previous window
+            }
+            if (isVowel(s.charAt(i))) {
+                tempCount++; // Add the rightmost character of the current window
+            }
+
+            maxCount = Math.max(tempCount, maxCount);
         }
 
         return maxCount;
+    }
+
+    private boolean isVowel(char c) {
+        return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
     }
 }

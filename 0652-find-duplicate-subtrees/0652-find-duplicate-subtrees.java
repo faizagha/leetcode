@@ -1,38 +1,30 @@
 class Solution {
     public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
-        List<TreeNode> duplicateSubTrees = new ArrayList<>();
-        Map<String, Integer> subtreeMap = new HashMap<>();
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            for (int i = 0; i < size; i++) {
-                TreeNode temp = queue.poll();
-                if (temp == null) {
-                    continue;
-                }
-                String subtreeKey = serialiseTree(temp);
-                subtreeMap.put(subtreeKey, subtreeMap.getOrDefault(subtreeKey, 0) + 1);
+    List<TreeNode> duplicates = new ArrayList<>();
+    Map<String, Integer> map = new HashMap<>();
+    postorder(root, map, duplicates);
+    return duplicates;
+}
 
-                if (subtreeMap.get(subtreeKey) == 2) {
-                    duplicateSubTrees.add(temp);
-                }
-                // Offer left and right children to the queue
-                queue.offer(temp.left);
-                queue.offer(temp.right);
-            }
-        }
-        return duplicateSubTrees;
+private String postorder(TreeNode node, Map<String, Integer> map, List<TreeNode> duplicates) {
+    if (node == null) return "#"; // Serialize null nodes
+
+    // Serialize left and right subtrees
+    String left = postorder(node.left, map, duplicates);
+    String right = postorder(node.right, map, duplicates);
+
+    // Serialize the current subtree
+    String subtree = node.val + "," + left + "," + right;
+
+    // Update the frequency of the subtree serialization
+    map.put(subtree, map.getOrDefault(subtree, 0) + 1);
+
+    // If the frequency becomes 2, add the current node to duplicates list
+    if (map.get(subtree) == 2) {
+        duplicates.add(node);
     }
 
-    private String serialiseTree(TreeNode root) {
-        if (root == null) {
-            return "#";
-        }
-        // Serialize left and right subtrees
-        String left = serialiseTree(root.left);
-        String right = serialiseTree(root.right);
-        // Concatenate the current node value and serialized left and right subtrees
-        return root.val + "," + left + "," + right;
-    }
+    return subtree;
+}
+
 }

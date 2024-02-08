@@ -5,25 +5,20 @@ class Solution {
         if (root == null) {
             return count;
         }
-
-        // Start the recursion with the root node and its value as the maximum
-        countGoodNodes(root, root.val);
+        int max = root.val;
+        helper(root, max);
         return count;
     }
 
-    private void countGoodNodes(TreeNode node, int maxSoFar) {
+    private void helper(TreeNode node, int max) {
         if (node == null) {
             return;
         }
-
-        // Check if the current node is greater than or equal to the maximum value encountered so far
-        if (node.val >= maxSoFar) {
+        if (node.val >= max) {
             count++;
-            maxSoFar = node.val; // Update the maximum value encountered so far
+            max = node.val;
         }
-
-        // Recursively process left and right subtrees
-        countGoodNodes(node.left, maxSoFar);
-        countGoodNodes(node.right, maxSoFar);
+        helper(node.left, max);
+        helper(node.right, max);
     }
 }
